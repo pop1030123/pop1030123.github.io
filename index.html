@@ -289,8 +289,8 @@ footer a{color:var(--ink-3)}
   .timer-wrap{flex:1;justify-content:center;min-height:0}
   .ring-box{width:clamp(100px,25vh,170px);height:clamp(100px,25vh,170px)}
 }
-/* 平板（竖屏/横屏）与中等宽度：双列布局 */
-@media(max-width:1079px){
+/* 平板（竖屏/横屏）与中等宽度：双列布局（<1024px；iPad mini 横屏 1024px 走三列桌面布局） */
+@media(max-width:1023px){
   main{
     grid-template-columns:repeat(2,minmax(0,1fr));
     grid-template-rows:minmax(190px,auto) minmax(0,1fr) auto;
