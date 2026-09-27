@@ -604,7 +604,8 @@ function applyTheme(){
   const dark = S.theme==="dark" || (S.theme==="auto" && mq.matches);
   document.documentElement.dataset.theme = dark ? "dark" : "light";
 }
-mq.addEventListener("change", ()=>{ if(S.theme==="auto") applyTheme(); });
+try{ mq.addEventListener("change", ()=>{ if(S.theme==="auto") applyTheme(); }); }
+catch(e){ mq.addListener(()=>{ if(S.theme==="auto") applyTheme(); }); }   /* Safari<14 兼容 */
 document.getElementById("btnTheme").onclick = ()=>{
   const nowDark = document.documentElement.dataset.theme==="dark";
   S.theme = nowDark ? "light" : "dark"; save(); applyTheme(); syncSettingsUI();
@@ -988,6 +989,7 @@ setInterval(()=>{ renderClock(); renderDate(); },1000);
    ≥720px 布局卡片高度由网格分配（container-type:size），不存在反馈循环；
    手机竖屏卡片高度由内容决定，仅按宽度缩放。 */
 (function(){
+  if(typeof ResizeObserver==="undefined") return;   /* 旧版 Safari 无 ResizeObserver：跳过动态缩放，内容仍正常显示 */
   const BASE={
     "card-date":{w:300,h:125,inner:".date-card-wrap"},
     "card-time":{w:370,h:125,inner:".clock-row"}
