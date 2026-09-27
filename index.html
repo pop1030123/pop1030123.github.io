@@ -2,9 +2,14 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="个人主页 · 日期 / 时间 / 农历日历 / 倒计时 / 天气">
 <title>My Dashboard</title>
+<!-- iOS 主屏幕 Web App：全屏独立启动，无地址栏/工具栏 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dashboard">
 <style>
 /* ============ Design Tokens ============ */
 :root{
@@ -43,6 +48,7 @@ body{
 header{
   flex:none;width:100%;
   max-width:1440px;margin:0 auto;padding:18px 20px 4px;
+  padding-top:calc(18px + env(safe-area-inset-top,0px));   /* 全屏 Web App 模式下避开状态栏 */
   display:flex;align-items:center;justify-content:space-between;gap:12px;
 }
 .brand{font-size:1.15rem;font-weight:700;letter-spacing:.02em}
@@ -271,7 +277,7 @@ body[data-running="1"] .colon-t{}
 .drawer .danger{width:100%;margin-top:6px;padding:9px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--warn);cursor:pointer;font-size:.82rem}
 .drawer .danger:hover{border-color:var(--warn)}
 .drawer-close{position:absolute;top:16px;right:16px}
-footer{flex:none;width:100%;max-width:1440px;margin:0 auto;padding:0 20px 8px;text-align:center;font-size:.72rem;color:var(--ink-3)}
+footer{flex:none;width:100%;max-width:1440px;margin:0 auto;padding:0 20px 8px;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.72rem;color:var(--ink-3)}
 footer a{color:var(--ink-3)}
 /* ================================================================
    响应式布局（置于样式表末尾，确保覆盖上面的组件基础样式）
