@@ -32,14 +32,17 @@ html[data-theme="dark"]{
   color-scheme: dark;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+html{height:100%}
 body{
   font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,-apple-system,"Segoe UI",sans-serif;
-  background:var(--bg); color:var(--ink); min-height:100vh;
+  background:var(--bg); color:var(--ink); height:100vh; height:100dvh;
+  display:flex;flex-direction:column;
   transition:background .35s ease,color .35s ease;
 }
 /* ============ Header ============ */
 header{
-  max-width:1280px;margin:0 auto;padding:28px 20px 6px;
+  flex:none;width:100%;
+  max-width:1280px;margin:0 auto;padding:18px 20px 4px;
   display:flex;align-items:center;justify-content:space-between;gap:12px;
 }
 .brand{font-size:1.15rem;font-weight:700;letter-spacing:.02em}
@@ -53,9 +56,11 @@ header{
 .icon-btn:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-1px)}
 /* ============ Layout ============ */
 main{
-  max-width:1280px;margin:0 auto;padding:18px 20px 48px;
+  flex:1 1 auto;min-height:0;width:100%;
+  max-width:1280px;margin:0 auto;padding:14px 20px 10px;
   display:grid;gap:16px;
   grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) minmax(0,1fr);
+  grid-template-rows:auto minmax(0,1fr);
   grid-template-areas:
     "date time weather"
     "calendar calendar timer";
@@ -72,58 +77,15 @@ main{
 @keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .card-title{font-size:.72rem;font-weight:600;color:var(--ink-3);letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
 .card-title::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
-/* 平板（竖屏/横屏）与中等宽度：双列布局 */
-@media(max-width:1079px){
-  main{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    grid-template-areas:
-      "date time"
-      "calendar timer"
-      "weather weather";
-  }
-}
-/* 手机竖屏：单列布局 */
-@media(max-width:719px){
-  main{
-    grid-template-columns:minmax(0,1fr);
-    grid-template-areas:"date" "time" "weather" "calendar" "timer";
-    padding:14px 12px 40px;gap:12px;
-  }
-  header{padding:20px 14px 4px}
-  .cal-cell .l{font-size:.56rem}   /* 小屏微缩农历字号，保证三字节日完整显示 */
-}
-/* 手机横屏 / iPad 横屏等低高度场景：紧凑化，尽量一屏容纳 */
-@media(orientation:landscape) and (max-height:860px){
-  :root{--dh:2.9rem}
-  .card{padding:16px}
-  .card-title{margin-bottom:10px}
-  .date-big{font-size:2.9rem}
-  .date-week{font-size:1.2rem}
-  .date-cn{font-size:.9rem}
-  .digit{width:2.1rem}
-  .digit span,.half b{font-size:2.1rem}
-  .colon{font-size:1.9rem}
-  .wx-icon{font-size:2.3rem}
-  .wx-temp{font-size:2rem}
-  .wx-days{margin-top:8px}
-  .ring-box{width:140px;height:140px}
-  .ring-time{font-size:1.5rem}
-  .tbtn{padding:7px 20px;font-size:.85rem}
-  .timer-wrap{gap:10px}
-  .cal-cell .d{font-size:.82rem}
-  .cal-cell .l{font-size:.56rem}
-}
-/* 极矮横屏（手机横屏）：进一步压缩 */
-@media(orientation:landscape) and (max-height:520px){
-  :root{--dh:2.2rem}
-  .card{padding:12px 14px}
-  .date-big{font-size:2.2rem}
-  header{padding:12px 20px 0}
-  main{padding:10px 20px 20px;gap:10px}
-}
 .hidden{display:none!important}
 /* ============ Date Card ============ */
-.date-card-wrap{display:flex;align-items:center;gap:20px}
+/* 日期/时间卡片：任意布局下内容水平+垂直居中 */
+.c-date,.c-time{display:flex;flex-direction:column}
+.c-date .card-title,.c-time .card-title{flex:none}
+.date-card-wrap{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  gap:20px;text-align:center;min-height:0;
+}
 .date-big{
   font-size:3.6rem;font-weight:800;line-height:1;color:var(--accent);
   font-variant-numeric:tabular-nums;min-width:2ch;text-align:center;
@@ -135,7 +97,8 @@ main{
 .date-lunar{font-size:.85rem;color:var(--ink-2)}
 .date-lunar b{color:var(--accent);font-weight:600}
 /* ============ Time Card ============ */
-.clock-row{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 0 4px}
+.clock-row{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 0 4px}
+.c-time .clock-sub{flex:none}
 .digit{position:relative;width:2.5rem;height:var(--dh);perspective:400px;overflow:hidden}
 .digit span{position:absolute;left:0;width:100%;height:50%;overflow:hidden;font-size:2.6rem;font-weight:700;font-variant-numeric:tabular-nums}
 .half b{position:absolute;left:0;top:0;width:100%;height:calc(var(--dh));display:block;text-align:center;line-height:var(--dh);font-weight:700;font-size:2.6rem;font-variant-numeric:tabular-nums}
@@ -309,8 +272,90 @@ body[data-running="1"] .colon-t{}
 .drawer .danger{width:100%;margin-top:6px;padding:9px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--warn);cursor:pointer;font-size:.82rem}
 .drawer .danger:hover{border-color:var(--warn)}
 .drawer-close{position:absolute;top:16px;right:16px}
-footer{max-width:1280px;margin:0 auto;padding:0 20px 30px;text-align:center;font-size:.72rem;color:var(--ink-3)}
+footer{flex:none;width:100%;max-width:1280px;margin:0 auto;padding:0 20px 8px;text-align:center;font-size:.72rem;color:var(--ink-3)}
 footer a{color:var(--ink-3)}
+/* ================================================================
+   响应式布局（置于样式表末尾，确保覆盖上面的组件基础样式）
+   ================================================================ */
+/* ≥720px：整页占满视口高度、无滚动条；日历/倒计时卡片弹性填充剩余高度 */
+@media(min-width:720px){
+  body{overflow:hidden}
+  .card-title,.cal-head{flex:none}
+  .c-calendar,.c-timer{display:flex;flex-direction:column;min-height:0}
+  .c-timer{overflow:hidden}   /* 计时器无弹层，超矮屏下内容在卡片内裁剪，避免溢出到相邻卡片 */
+  .cal-grid{flex:1;min-height:0}
+  .cal-cell{aspect-ratio:auto;overflow:hidden}
+  .cal-legend{flex:none}
+  .timer-wrap{flex:1;justify-content:center;min-height:0}
+  .ring-box{width:clamp(100px,25vh,170px);height:clamp(100px,25vh,170px)}
+}
+/* 平板（竖屏/横屏）与中等宽度：双列布局 */
+@media(max-width:1079px){
+  main{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-rows:auto minmax(0,1fr) auto;
+    grid-template-areas:
+      "date time"
+      "calendar timer"
+      "weather weather";
+  }
+}
+/* 手机竖屏：单列布局，允许纵向滚动（内容物理上无法压缩进一屏） */
+@media(max-width:719px){
+  body{height:auto;min-height:100vh;overflow:auto}
+  main{
+    flex:none;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:none;
+    grid-template-areas:"date" "time" "weather" "calendar" "timer";
+    padding:14px 12px 40px;gap:12px;
+  }
+  header{padding:20px 14px 4px}
+  .cal-cell .l{font-size:.56rem}   /* 小屏微缩农历字号，保证三字节日完整显示 */
+}
+/* 手机横屏 / iPad 横屏等低高度场景：紧凑化，尽量一屏容纳 */
+@media(orientation:landscape) and (max-height:860px){
+  :root{--dh:2.9rem}
+  .card{padding:16px}
+  .card-title{margin-bottom:10px}
+  .date-big{font-size:2.9rem}
+  .date-week{font-size:1.2rem}
+  .date-cn{font-size:.9rem}
+  .digit{width:2.1rem}
+  .digit span,.half b{font-size:2.1rem}
+  .colon{font-size:1.9rem}
+  .wx-icon{font-size:2.3rem}
+  .wx-temp{font-size:2rem}
+  .wx-days{margin-top:8px}
+  .ring-box{width:clamp(90px,22vh,140px);height:clamp(90px,22vh,140px)}
+  .ring-time{font-size:1.5rem}
+  .tbtn{padding:7px 20px;font-size:.85rem}
+  .timer-wrap{gap:10px}
+  .cal-cell .d{font-size:.82rem}
+  .cal-cell .l{font-size:.56rem}
+}
+/* 极矮横屏（手机横屏）：改三列两行布局 + 深度压缩，保证一屏放下、无滚动 */
+@media(orientation:landscape) and (max-height:520px){
+  :root{--dh:2.2rem}
+  .card{padding:12px 14px}
+  .date-big{font-size:2.2rem}
+  header{padding:10px 20px 0}
+  main{
+    padding:10px 20px 8px;gap:10px;
+    grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,.9fr);
+    grid-template-rows:auto minmax(0,1fr);
+    grid-template-areas:"date time weather" "calendar calendar timer";
+  }
+  footer{display:none}
+  .ring-box{width:clamp(64px,16vh,96px);height:clamp(64px,16vh,96px)}
+  .timer-presets{display:none}       /* 预设按钮隐藏（开始前为默认时长），把高度让给圆环 */
+  .tbtn{padding:5px 14px;font-size:.78rem}
+  .cal-legend{display:none}          /* 图例隐藏，把高度让给日期格 */
+  .cal-cell .d{font-size:.72rem}
+  .cal-cell .l{display:none}         /* 农历小字在超矮格子中隐藏 */
+  .wx-days{display:none}
+  .wx-main{gap:10px}
+}
 </style>
 </head>
 <body data-anim="flip" data-running="0">
@@ -723,6 +768,9 @@ function renderCal(){
   const prevDays=new Date(calY,calM,0).getDate();
   const today=new Date(); const tKey=fmtKey(today.getFullYear(),today.getMonth(),today.getDate());
   const total=Math.ceil((startDow+daysInMonth)/7)*7;
+  /* 宽屏（满屏无滚动布局）：星期表头行 auto，日期行随剩余高度均分；手机竖屏交还给 aspect-ratio */
+  grid.style.gridTemplateRows=matchMedia("(min-width:720px)").matches
+    ? "auto repeat("+(total/7)+",minmax(0,1fr))" : "";
   for(let i=0;i<total;i++){
     let d, out=false, cellY=calY, cellM=calM;
     if(i<startDow){ d=prevDays-startDow+1+i; out=true; cellM-=1; if(cellM<0){cellM=11;cellY-=1;} }
@@ -760,6 +808,9 @@ function renderCal(){
   }
   renderLegend();
 }
+/* 视口宽度跨越 720px 断点时重新渲染，使日历行高策略（1fr 均分 / aspect-ratio）随之切换 */
+try{ matchMedia("(min-width:720px)").addEventListener("change",renderCal); }
+catch(e){ matchMedia("(min-width:720px)").addListener(renderCal); }
 function renderLegend(){
   const cnt={};
   const prefix=calY+"-"+String(calM+1).padStart(2,"0")+"-";   // 只统计当前查看的月份
