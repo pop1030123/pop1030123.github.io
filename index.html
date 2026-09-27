@@ -42,7 +42,7 @@ body{
 /* ============ Header ============ */
 header{
   flex:none;width:100%;
-  max-width:1280px;margin:0 auto;padding:18px 20px 4px;
+  max-width:1440px;margin:0 auto;padding:18px 20px 4px;
   display:flex;align-items:center;justify-content:space-between;gap:12px;
 }
 .brand{font-size:1.15rem;font-weight:700;letter-spacing:.02em}
@@ -57,10 +57,10 @@ header{
 /* ============ Layout ============ */
 main{
   flex:1 1 auto;min-height:0;width:100%;
-  max-width:1280px;margin:0 auto;padding:14px 20px 10px;
+  max-width:1440px;margin:0 auto;padding:14px 20px 10px;
   display:grid;gap:16px;
   grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) minmax(0,1fr);
-  grid-template-rows:auto minmax(0,1fr);
+  grid-template-rows:minmax(auto,.55fr) minmax(0,1fr);
   grid-template-areas:
     "date time weather"
     "calendar calendar timer";
@@ -79,29 +79,29 @@ main{
 .card-title::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
 .hidden{display:none!important}
 /* ============ Date Card ============ */
-/* 日期/时间卡片：任意布局下内容水平+垂直居中 */
+/* 日期/时间卡片：内容随卡片实际尺寸动态缩放（--fscale 由 JS ResizeObserver 计算） */
 .c-date,.c-time{display:flex;flex-direction:column}
 .c-date .card-title,.c-time .card-title{flex:none}
 .date-card-wrap{
   flex:1;display:flex;align-items:center;justify-content:center;
-  gap:20px;text-align:center;min-height:0;
+  gap:calc(20px*var(--fscale,1));text-align:center;min-height:0;
 }
 .date-big{
-  font-size:3.6rem;font-weight:800;line-height:1;color:var(--accent);
+  font-size:calc(3.6rem*var(--fscale,1));font-weight:800;line-height:1;color:var(--accent);
   font-variant-numeric:tabular-nums;min-width:2ch;text-align:center;
 }
-.date-big small{display:block;font-size:.85rem;font-weight:600;color:var(--ink-3);margin-top:4px}
-.date-meta div{padding:2px 0}
-.date-cn{font-size:1.05rem;font-weight:700}
-.date-week{font-size:1.5rem;font-weight:700;margin:2px 0}
-.date-lunar{font-size:.85rem;color:var(--ink-2)}
+.date-big small{display:block;font-size:calc(.85rem*var(--fscale,1));font-weight:600;color:var(--ink-3);margin-top:calc(4px*var(--fscale,1))}
+.date-meta div{padding:calc(2px*var(--fscale,1)) 0}
+.date-cn{font-size:calc(1.05rem*var(--fscale,1));font-weight:700}
+.date-week{font-size:calc(1.5rem*var(--fscale,1));font-weight:700;margin:2px 0}
+.date-lunar{font-size:calc(.85rem*var(--fscale,1));color:var(--ink-2)}
 .date-lunar b{color:var(--accent);font-weight:600}
 /* ============ Time Card ============ */
-.clock-row{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 0 4px}
-.c-time .clock-sub{flex:none}
-.digit{position:relative;width:2.5rem;height:var(--dh);perspective:400px;overflow:hidden}
-.digit span{position:absolute;left:0;width:100%;height:50%;overflow:hidden;font-size:2.6rem;font-weight:700;font-variant-numeric:tabular-nums}
-.half b{position:absolute;left:0;top:0;width:100%;height:calc(var(--dh));display:block;text-align:center;line-height:var(--dh);font-weight:700;font-size:2.6rem;font-variant-numeric:tabular-nums}
+.c-time{--dh:calc(3.6rem*var(--fscale,1))}
+.clock-row{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:calc(6px*var(--fscale,1));padding:10px 0 4px}
+.digit{position:relative;width:calc(2.5rem*var(--fscale,1));height:var(--dh);perspective:400px;overflow:hidden}
+.digit span{position:absolute;left:0;width:100%;height:50%;overflow:hidden;font-size:calc(2.6rem*var(--fscale,1));font-weight:700;font-variant-numeric:tabular-nums}
+.half b{position:absolute;left:0;top:0;width:100%;height:calc(var(--dh));display:block;text-align:center;line-height:var(--dh);font-weight:700;font-size:calc(2.6rem*var(--fscale,1));font-variant-numeric:tabular-nums}
 .half{position:absolute;left:0;width:100%;height:calc(var(--dh)/2);overflow:hidden}
 .half.top{top:0}.half.top b{top:0}
 .half.bottom{bottom:0}.half.bottom b{top:calc(var(--dh)/-2)}
@@ -113,17 +113,16 @@ main{
 .digit.flip .bottom-new{animation:foldDown .32s .32s ease-in forwards}
 @keyframes foldUp{to{transform:rotateX(-90deg)}}
 @keyframes foldDown{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
-.colon{font-size:2.4rem;font-weight:700;color:var(--accent);line-height:var(--dh);padding:0 2px}
+.colon{font-size:calc(2.4rem*var(--fscale,1));font-weight:700;color:var(--accent);line-height:var(--dh);padding:0 2px}
 html[data-theme="light"] .colon{color:var(--ink-2)}   /* 浅色模式冒号用灰色 */
 /* slide mode：旧数字向上滑出，新数字自下向上滑入 */
 body[data-anim="slide"] .digit .half{display:none}
-body[data-anim="slide"] .digit .sl{position:absolute;inset:0;height:100%;display:block;text-align:center;font-size:2.6rem;font-weight:700;line-height:var(--dh);font-variant-numeric:tabular-nums}
+body[data-anim="slide"] .digit .sl{position:absolute;inset:0;height:100%;display:block;text-align:center;font-size:calc(2.6rem*var(--fscale,1));font-weight:700;line-height:var(--dh);font-variant-numeric:tabular-nums}
 body[data-anim="slide"] .digit .sl.out{animation:slideOutUp .35s ease-in both}
 body[data-anim="slide"] .digit .sl.in{animation:slideInUp .35s ease-out both}
 @keyframes slideOutUp{from{transform:translateY(0)}to{transform:translateY(-100%)}}
 @keyframes slideInUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(--digit-bg)}
-.clock-sub{text-align:center;color:var(--ink-3);font-size:.8rem;letter-spacing:.1em;margin-top:8px}
 /* ============ Weather Card ============ */
 .wx-main{display:flex;align-items:center;gap:14px}
 .wx-icon{font-size:3rem;line-height:1}
@@ -272,7 +271,7 @@ body[data-running="1"] .colon-t{}
 .drawer .danger{width:100%;margin-top:6px;padding:9px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--warn);cursor:pointer;font-size:.82rem}
 .drawer .danger:hover{border-color:var(--warn)}
 .drawer-close{position:absolute;top:16px;right:16px}
-footer{flex:none;width:100%;max-width:1280px;margin:0 auto;padding:0 20px 8px;text-align:center;font-size:.72rem;color:var(--ink-3)}
+footer{flex:none;width:100%;max-width:1440px;margin:0 auto;padding:0 20px 8px;text-align:center;font-size:.72rem;color:var(--ink-3)}
 footer a{color:var(--ink-3)}
 /* ================================================================
    响应式布局（置于样式表末尾，确保覆盖上面的组件基础样式）
@@ -280,6 +279,7 @@ footer a{color:var(--ink-3)}
 /* ≥720px：整页占满视口高度、无滚动条；日历/倒计时卡片弹性填充剩余高度 */
 @media(min-width:720px){
   body{overflow:hidden}
+  .c-date,.c-time{container-type:size}   /* 尺寸容器：卡片高度由网格分配决定，内容缩放不反过来影响卡片高度 */
   .card-title,.cal-head{flex:none}
   .c-calendar,.c-timer{display:flex;flex-direction:column;min-height:0}
   .c-timer{overflow:hidden}   /* 计时器无弹层，超矮屏下内容在卡片内裁剪，避免溢出到相邻卡片 */
@@ -293,7 +293,7 @@ footer a{color:var(--ink-3)}
 @media(max-width:1079px){
   main{
     grid-template-columns:repeat(2,minmax(0,1fr));
-    grid-template-rows:auto minmax(0,1fr) auto;
+    grid-template-rows:minmax(190px,auto) minmax(0,1fr) auto;
     grid-template-areas:
       "date time"
       "calendar timer"
@@ -315,15 +315,8 @@ footer a{color:var(--ink-3)}
 }
 /* 手机横屏 / iPad 横屏等低高度场景：紧凑化，尽量一屏容纳 */
 @media(orientation:landscape) and (max-height:860px){
-  :root{--dh:2.9rem}
   .card{padding:16px}
   .card-title{margin-bottom:10px}
-  .date-big{font-size:2.9rem}
-  .date-week{font-size:1.2rem}
-  .date-cn{font-size:.9rem}
-  .digit{width:2.1rem}
-  .digit span,.half b{font-size:2.1rem}
-  .colon{font-size:1.9rem}
   .wx-icon{font-size:2.3rem}
   .wx-temp{font-size:2rem}
   .wx-days{margin-top:8px}
@@ -336,14 +329,12 @@ footer a{color:var(--ink-3)}
 }
 /* 极矮横屏（手机横屏）：改三列两行布局 + 深度压缩，保证一屏放下、无滚动 */
 @media(orientation:landscape) and (max-height:520px){
-  :root{--dh:2.2rem}
   .card{padding:12px 14px}
-  .date-big{font-size:2.2rem}
   header{padding:10px 20px 0}
   main{
     padding:10px 20px 8px;gap:10px;
     grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,.9fr);
-    grid-template-rows:auto minmax(0,1fr);
+    grid-template-rows:minmax(96px,auto) minmax(0,1fr);
     grid-template-areas:"date time weather" "calendar calendar timer";
   }
   footer{display:none}
@@ -386,7 +377,6 @@ footer a{color:var(--ink-3)}
   <section class="card c-time" id="card-time">
     <div class="card-title">时间</div>
     <div class="clock-row" id="clock"></div>
-    <div class="clock-sub" id="clockSub">FLIP CLOCK</div>
   </section>
 
   <!-- 天气卡片 -->
@@ -650,7 +640,6 @@ function buildClock(){
       '<span class="half bottom bottom-new"><b>0</b></span>';
     clockEl.appendChild(d);
   });
-  document.getElementById("clockSub").textContent = S.anim==="flip" ? "FLIP CLOCK" : "SLIDE CLOCK";
 }
 function setDigit(el,val){
   if(S.anim==="slide"){
@@ -992,6 +981,35 @@ buildClock();
 for(const k in S.cards){ document.getElementById("card-"+k).classList.toggle("hidden",!S.cards[k]); }
 renderDate(); renderClock(); renderCal(); renderPresets(); renderTimer(); fetchWeather();
 setInterval(()=>{ renderClock(); renderDate(); },1000);
+
+/* ==================== 日期/时间卡片内容随卡片尺寸动态缩放 ==================== */
+/* 测量卡片内弹性内容区（date-card-wrap / clock-row），按 基准宽高 计算 --fscale；
+   所有字号/数字尺寸均为 calc(基准 × var(--fscale))，卡片变大内容随之变大。
+   ≥720px 布局卡片高度由网格分配（container-type:size），不存在反馈循环；
+   手机竖屏卡片高度由内容决定，仅按宽度缩放。 */
+(function(){
+  const BASE={
+    "card-date":{w:300,h:125,inner:".date-card-wrap"},
+    "card-time":{w:370,h:125,inner:".clock-row"}
+  };
+  const ro=new ResizeObserver(entries=>{
+    for(const en of entries){
+      const card=en.target, b=BASE[card.id];
+      if(!b) continue;
+      const inner=card.querySelector(b.inner);
+      if(!inner) continue;
+      const w=inner.clientWidth, h=inner.clientHeight;
+      if(w<=0||h<=0) continue;               // 卡片隐藏时跳过，显示时 RO 会再次触发
+      let s=(window.innerWidth<720)? w/b.w : Math.min(w/b.w,h/b.h);
+      s=Math.max(0.55,Math.min(1.6,s));
+      card.style.setProperty("--fscale",s.toFixed(3));
+    }
+  });
+  ["card-date","card-time"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) ro.observe(el);
+  });
+})();
 </script>
 </body>
 </html>
