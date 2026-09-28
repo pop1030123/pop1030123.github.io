@@ -42,8 +42,8 @@
   .wx-temp{font-size:2rem}
   .wx-days{margin-top:8px}
   .cal-head{margin-bottom:6px}
-  .cal-cell .d{font-size:.82rem}
-  .cal-cell .l{font-size:.56rem}
+  .cal-cell .d{font-size:1.1rem}
+  .cal-cell .l{font-size:.66rem}
 }
 /* 极矮横屏（手机横屏）：深度压缩 */
 @media(max-height:520px){
@@ -52,7 +52,7 @@
   main{padding:10px 20px 8px;gap:10px}
   footer{display:none}
   .cal-legend{display:none}          /* 图例隐藏，把高度让给日期格 */
-  .cal-cell .d{font-size:.72rem}
+  .cal-cell .d{font-size:.9rem}
   .cal-cell .l{display:none}         /* 农历小字在超矮格子中隐藏 */
   .wx-days{display:none}
   .wx-main{gap:10px}

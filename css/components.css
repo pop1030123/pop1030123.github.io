@@ -105,8 +105,8 @@ body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(
   color:var(--ink-2);cursor:pointer;font-size:.9rem;transition:.2s;
 }
 .cal-nav button:hover{border-color:var(--accent);color:var(--accent)}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
-.cal-wd{text-align:center;font-size:.74rem;color:var(--ink-3);padding:4px 0;font-weight:600}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+.cal-wd{text-align:center;font-size:.8rem;color:var(--ink-3);padding:3px 0;font-weight:600}
 .cal-wd.weekend{color:var(--accent)}
 .cal-cell{
   aspect-ratio:1/1;border-radius:var(--radius-sm);display:flex;flex-direction:column;
@@ -118,8 +118,8 @@ body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(
   .cal-cell{height:100%;aspect-ratio:auto;}
 }
 .cal-cell:hover{background:var(--surface-2)}
-.cal-cell .d{font-size:1.05rem;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
-.cal-cell .l{font-size:.72rem;color:var(--ink-3);line-height:1.2;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
+.cal-cell .d{font-size:1.25rem;font-weight:600;line-height:1.05;font-variant-numeric:tabular-nums}
+.cal-cell .l{font-size:.78rem;color:var(--ink-3);line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 1px}
 .cal-cell.has-side .l{max-width:calc(100% - 24px)}   /* 仅有左右图标时才收窄文字 */
 .cal-cell .l.fest{color:var(--accent)}
 .cal-cell.today{background:var(--accent);border-color:var(--accent)}
