@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="description" content="个人主页 · 日期 / 时间 / 农历日历 / 倒计时 / 天气">
+<meta name="description" content="个人主页 · 日期 / 时间 / 农历日历 / 天气">
 <title>My Dashboard</title>
 <!-- iOS 主屏幕 Web App：全屏独立启动，无地址栏/工具栏 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,14 +11,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Dashboard">
 <!-- 样式：基础 → 组件 → 响应式（顺序不可颠倒，响应式须最后覆盖） -->
-<link rel="stylesheet" href="css/base.css?v=2">
-<link rel="stylesheet" href="css/components.css?v=2">
-<link rel="stylesheet" href="css/responsive.css?v=2">
+<link rel="stylesheet" href="css/base.css?v=4">
+<link rel="stylesheet" href="css/components.css?v=4">
+<link rel="stylesheet" href="css/responsive.css?v=4">
 </head>
-<body data-anim="flip" data-running="0">
+<body data-anim="flip">
 
 <header>
-  <div class="brand">My Dashboard<small>DATE · TIME · LUNAR · FOCUS · WEATHER</small></div>
+  <div class="brand">My Dashboard<small>DATE · TIME · LUNAR · WEATHER</small></div>
   <div class="header-actions">
     <button class="icon-btn" id="btnTheme" title="切换深浅色">🌓</button>
     <button class="icon-btn" id="btnSettings" title="设置">⚙️</button>
@@ -26,7 +26,7 @@
 </header>
 
 <main id="grid">
-  <!-- 日期卡片 -->
+  <!-- 第一行：日期 / 时间 -->
   <section class="card c-date" id="card-date">
     <div class="card-title">日期</div>
     <div class="date-card-wrap">
@@ -39,13 +39,12 @@
     </div>
   </section>
 
-  <!-- 时间卡片 -->
   <section class="card c-time" id="card-time">
     <div class="card-title">时间</div>
     <div class="clock-row" id="clock"></div>
   </section>
 
-  <!-- 天气卡片 -->
+  <!-- 第二行：天气 / 日历 -->
   <section class="card c-weather" id="card-weather">
     <div class="card-title">天气 <span style="margin-left:auto;cursor:pointer" id="wxRefresh" title="刷新">↻</span></div>
     <div class="wx-main" id="wxMain"><div class="wx-err wx-loading">正在定位获取天气…</div></div>
@@ -53,7 +52,6 @@
     <div class="wx-days" id="wxDays"></div>
   </section>
 
-  <!-- 日历卡片 -->
   <section class="card c-calendar" id="card-calendar">
     <div class="card-title">日历</div>
     <div class="cal-head">
@@ -66,28 +64,6 @@
     </div>
     <div class="cal-grid" id="calGrid"></div>
     <div class="cal-legend" id="calLegend"></div>
-  </section>
-
-  <!-- 倒计时卡片 -->
-  <section class="card c-timer" id="card-timer">
-    <div class="card-title">倒计时</div>
-    <div class="timer-wrap">
-      <div class="timer-presets" id="presets"></div>
-      <div class="ring-box">
-        <svg width="170" height="170" viewBox="0 0 170 170">
-          <circle class="ring-bg" cx="85" cy="85" r="76"></circle>
-          <circle class="ring-fg" id="ring" cx="85" cy="85" r="76" stroke-dasharray="477.5" stroke-dashoffset="0"></circle>
-        </svg>
-        <div class="ring-label">
-          <div class="ring-time" id="tTime">05:00</div>
-          <div class="ring-state" id="tState">READY</div>
-        </div>
-      </div>
-      <div class="timer-btns">
-        <button class="tbtn primary" id="tStart">开始</button>
-        <button class="tbtn" id="tReset">重置</button>
-      </div>
-    </div>
   </section>
 </main>
 
@@ -130,18 +106,7 @@
     <label class="chk"><input type="checkbox" data-card="date" checked>日期</label>
     <label class="chk"><input type="checkbox" data-card="time" checked>时间</label>
     <label class="chk"><input type="checkbox" data-card="calendar" checked>日历（农历 + 标记）</label>
-    <label class="chk"><input type="checkbox" data-card="timer" checked>倒计时</label>
     <label class="chk"><input type="checkbox" data-card="weather" checked>天气</label>
-  </div>
-
-  <div class="set-group">
-    <label>倒计时预设（分钟）</label>
-    <div class="timer-rows">
-      <label>预设 1<input type="number" min="1" max="180" data-timer="0"></label>
-      <label>预设 2<input type="number" min="1" max="180" data-timer="1"></label>
-      <label>预设 3<input type="number" min="1" max="180" data-timer="2"></label>
-      <label>预设 4<input type="number" min="1" max="180" data-timer="3"></label>
-    </div>
   </div>
 
   <div class="set-group">
@@ -150,17 +115,16 @@
 </aside>
 
 <!-- 脚本：按依赖顺序加载（传统 script，无构建依赖；main.js 必须最后） -->
-<script src="js/storage.js?v=2"></script>
-<script src="js/lunar.js?v=2"></script>
-<script src="js/shapes.js?v=2"></script>
-<script src="js/theme.js?v=2"></script>
-<script src="js/date.js?v=2"></script>
-<script src="js/clock.js?v=2"></script>
-<script src="js/weather.js?v=2"></script>
-<script src="js/calendar.js?v=2"></script>
-<script src="js/timer.js?v=2"></script>
-<script src="js/settings.js?v=2"></script>
-<script src="js/scale.js?v=2"></script>
-<script src="js/main.js?v=2"></script>
+<script src="js/storage.js?v=3"></script>
+<script src="js/lunar.js?v=3"></script>
+<script src="js/shapes.js?v=3"></script>
+<script src="js/theme.js?v=3"></script>
+<script src="js/date.js?v=3"></script>
+<script src="js/clock.js?v=3"></script>
+<script src="js/weather.js?v=3"></script>
+<script src="js/calendar.js?v=3"></script>
+<script src="js/settings.js?v=3"></script>
+<script src="js/scale.js?v=3"></script>
+<script src="js/main.js?v=3"></script>
 </body>
 </html>

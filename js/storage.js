@@ -3,17 +3,16 @@
    storage.js — 设置与日历标记的持久化（localStorage）
    全局导出：LS_KEY / S / save() / marks / saveMarks() / escHtml()
    ================================================================ */
-const LS_KEY = "dash-settings-v1";
+const LS_KEY = "dash-settings-v2";
 const DEFAULTS = {
   theme:"auto", anim:"flip", weekStart:0,
-  cards:{date:true,time:true,calendar:true,timer:true,weather:true},
-  timers:[5,10,20,30]
+  cards:{date:true,time:true,calendar:true,weather:true}
 };
 let S = loadSettings();
 function loadSettings(){
   try{
     const raw = JSON.parse(localStorage.getItem(LS_KEY));
-    if(raw) return Object.assign({}, DEFAULTS, raw, {cards:Object.assign({},DEFAULTS.cards,raw.cards||{}), timers:(raw.timers&&raw.timers.length===4)?raw.timers:DEFAULTS.timers.slice()});
+    if(raw) return Object.assign({}, DEFAULTS, raw, {cards:Object.assign({},DEFAULTS.cards,raw.cards||{})});
   }catch(e){}
   return JSON.parse(JSON.stringify(DEFAULTS));
 }

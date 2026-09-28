@@ -7,14 +7,15 @@ main{
   flex:1 1 auto;min-height:0;width:100%;
   max-width:1440px;margin:0 auto;padding:14px 20px 10px;
   display:grid;gap:16px;
-  grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) minmax(0,1fr);
+  /* 两行两列：第一行 日期 / 时间，第二行 天气 / 日历 */
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
   grid-template-rows:minmax(auto,.5fr) minmax(0,1fr);
   grid-template-areas:
-    "date time weather"
-    "calendar calendar timer";
+    "date time"
+    "weather calendar";
 }
-.c-date{grid-area:date}.c-time{grid-area:time}.c-weather{grid-area:weather}
-.c-calendar{grid-area:calendar}.c-timer{grid-area:timer}
+.c-date{grid-area:date}.c-time{grid-area:time}
+.c-weather{grid-area:weather}.c-calendar{grid-area:calendar}
 .card{
   background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
   box-shadow:var(--shadow-1);padding:22px;position:relative;overflow:visible;
@@ -30,6 +31,9 @@ main{
 /* 日期/时间卡片：内容随卡片实际尺寸动态缩放（--fscale 由 JS ResizeObserver 计算） */
 .c-date,.c-time{display:flex;flex-direction:column}
 .c-date .card-title,.c-time .card-title{flex:none}
+/* 天气 / 日历卡片：与日期/时间卡片相同的“标题固定 + 内容居中”结构 */
+.c-weather,.c-calendar{display:flex;flex-direction:column}
+.c-weather .card-title,.c-calendar .card-title,.c-calendar .cal-head,.c-calendar .cal-legend{flex:none}
 .date-card-wrap{
   flex:1;display:flex;align-items:center;justify-content:center;
   gap:calc(20px*var(--fscale,1));text-align:center;min-height:0;
@@ -169,33 +173,6 @@ body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(
 }
 .pop button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
 .pop button:hover{border-color:var(--accent)}
-/* ============ Timer Card ============ */
-.timer-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
-.timer-presets{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-.preset{
-  border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);
-  border-radius:999px;padding:5px 10px;font-size:.75rem;cursor:pointer;transition:.2s;font-variant-numeric:tabular-nums;
-}
-.preset:hover{border-color:var(--accent);color:var(--accent)}
-.preset.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
-.ring-box{position:relative;width:140px;height:140px}
-.ring-box svg{width:100%;height:100%;transform:rotate(-90deg)}
-/* 大屏（高度充足）再放大到 170px；短视口下保持 140px 避免重叠 */
-@media(min-height:900px){.ring-box{width:170px;height:170px}}
-.ring-bg{fill:none;stroke:var(--line);stroke-width:8}
-.ring-fg{fill:none;stroke:var(--accent);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .5s linear,stroke .3s}
-.ring-fg.done{stroke:var(--ok)}
-.ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ring-time{font-size:1.9rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.02em}
-.ring-state{font-size:.7rem;color:var(--ink-3);letter-spacing:.2em;margin-top:2px}
-.timer-btns{display:flex;gap:10px}
-.tbtn{
-  padding:9px 26px;border-radius:999px;border:1px solid var(--line);background:var(--surface);
-  color:var(--ink);font-size:.9rem;font-weight:600;cursor:pointer;transition:.2s;
-}
-.tbtn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.tbtn:hover{transform:translateY(-1px);box-shadow:var(--shadow-1)}
-.tbtn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 /* ============ Settings Drawer ============ */
 .mask{position:fixed;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:.3s;z-index:90}
 .mask.on{opacity:1;pointer-events:auto}
@@ -214,13 +191,6 @@ body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(
 .seg button.on{background:var(--accent);color:var(--accent-ink);font-weight:600}
 .chk{display:flex;align-items:center;gap:10px;padding:9px 0;cursor:pointer;font-size:.88rem;user-select:none}
 .chk input{accent-color:var(--accent);width:16px;height:16px;cursor:pointer}
-.timer-rows{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.timer-rows label{font-size:.78rem;color:var(--ink-2);display:flex;flex-direction:column;gap:5px}
-.timer-rows input{
-  border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:8px;
-  padding:7px 9px;font-size:.85rem;outline:none;width:100%;
-}
-.timer-rows input:focus{border-color:var(--accent)}
 .drawer .danger{width:100%;margin-top:6px;padding:9px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--warn);cursor:pointer;font-size:.82rem}
 .drawer .danger:hover{border-color:var(--warn)}
 .drawer-close{position:absolute;top:16px;right:16px}

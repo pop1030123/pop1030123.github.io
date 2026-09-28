@@ -7,5 +7,5 @@ applyTheme();
 document.body.dataset.anim=S.anim;
 buildClock();
 for(const k in S.cards){ document.getElementById("card-"+k).classList.toggle("hidden",!S.cards[k]); }
-renderDate(); renderClock(); renderCal(); renderPresets(); renderTimer(); fetchWeather();
+renderDate(); renderClock(); renderCal(); fetchWeather();
 setInterval(()=>{ renderClock(); renderDate(); },1000);
