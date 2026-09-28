@@ -14,7 +14,7 @@
   .cal-legend{flex:none}
   .timer-wrap{flex:1;justify-content:center;min-height:0}
   .ring-box{width:clamp(100px,25vh,170px);height:clamp(100px,25vh,170px)}
-  /* 旧版 Safari 不支持 clamp()：提供固定兜底尺寸 */
+  /* 旧版 Safari 不支持 clamp()：提供固定兜底尺寸（与 components.css 基础 140px 一致） */
   .ring-box{width:140px;height:140px}
 }
 /* 平板（竖屏/横屏）与中等宽度：双列布局（<1024px；iPad mini 横屏 1024px 走三列桌面布局） */
@@ -41,25 +41,27 @@
   header{padding:20px 14px 4px}
   .cal-cell .l{font-size:.56rem}   /* 小屏微缩农历字号，保证三字节日完整显示 */
 }
-/* 手机横屏 / iPad 横屏等低高度场景：紧凑化，尽量一屏容纳 */
-@media(orientation:landscape) and (max-height:860px){
-  .card{padding:16px}
-  .card-title{margin-bottom:10px}
+/* 低高度场景：紧凑化，尽量一屏容纳（不再限定 orientation，确保 iPad mini 横屏一定命中） */
+@media(max-height:860px){
+  .card{padding:12px}
+  .card-title{margin-bottom:6px}
+  header{padding:10px 20px 0}
   .wx-icon{font-size:2.3rem}
   .wx-temp{font-size:2rem}
   .wx-days{margin-top:8px}
   .ring-box{width:clamp(90px,22vh,140px);height:clamp(90px,22vh,140px)}
   /* 旧版 Safari 不支持 clamp()：用更小固定尺寸避免与文字/按钮重叠 */
   .ring-box{width:110px;height:110px}
-  .ring-time{font-size:1.5rem}
-  .tbtn{padding:7px 20px;font-size:.85rem}
-  .timer-wrap{gap:10px}
-  .timer-presets{display:none}       /* 低高度横屏隐藏预设，避免折行撑高计时器卡片 */
+  .ring-time{font-size:1.4rem}
+  .tbtn{padding:6px 18px;font-size:.82rem}
+  .timer-wrap{gap:8px}
+  .timer-presets{display:none}       /* 低高度隐藏预设，避免折行撑高计时器卡片 */
+  .cal-head{margin-bottom:6px}
   .cal-cell .d{font-size:.82rem}
   .cal-cell .l{font-size:.56rem}
 }
 /* 极矮横屏（手机横屏）：改三列两行布局 + 深度压缩，保证一屏放下、无滚动 */
-@media(orientation:landscape) and (max-height:520px){
+@media(max-height:520px){
   .card{padding:12px 14px}
   header{padding:10px 20px 0}
   main{

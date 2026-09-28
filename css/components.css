@@ -8,7 +8,7 @@ main{
   max-width:1440px;margin:0 auto;padding:14px 20px 10px;
   display:grid;gap:16px;
   grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) minmax(0,1fr);
-  grid-template-rows:minmax(auto,.55fr) minmax(0,1fr);
+  grid-template-rows:minmax(auto,.5fr) minmax(0,1fr);
   grid-template-areas:
     "date time weather"
     "calendar calendar timer";
@@ -171,15 +171,17 @@ body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(
 .pop button:hover{border-color:var(--accent)}
 /* ============ Timer Card ============ */
 .timer-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
-.timer-presets{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.timer-presets{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
 .preset{
   border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);
-  border-radius:999px;padding:6px 14px;font-size:.8rem;cursor:pointer;transition:.2s;font-variant-numeric:tabular-nums;
+  border-radius:999px;padding:5px 10px;font-size:.75rem;cursor:pointer;transition:.2s;font-variant-numeric:tabular-nums;
 }
 .preset:hover{border-color:var(--accent);color:var(--accent)}
 .preset.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
-.ring-box{position:relative;width:170px;height:170px}
+.ring-box{position:relative;width:140px;height:140px}
 .ring-box svg{width:100%;height:100%;transform:rotate(-90deg)}
+/* 大屏（高度充足）再放大到 170px；短视口下保持 140px 避免重叠 */
+@media(min-height:900px){.ring-box{width:170px;height:170px}}
 .ring-bg{fill:none;stroke:var(--line);stroke-width:8}
 .ring-fg{fill:none;stroke:var(--accent);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .5s linear,stroke .3s}
 .ring-fg.done{stroke:var(--ok)}
