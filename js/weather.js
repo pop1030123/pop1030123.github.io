@@ -22,11 +22,12 @@ function fetchWeather(){
       "&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=4";
     fetch(url).then(r=>r.json()).then(j=>{
       const c=j.current, info=wxInfo(c.weather_code);
+      /* 当天信息横向一排：图标 | 温度 | 天气 | 地区 */
       main.innerHTML=
-        '<div class="wx-icon">'+info[1]+'</div><div>'+
+        '<div class="wx-icon">'+info[1]+'</div>'+
         '<div class="wx-temp">'+Math.round(c.temperature_2m)+"<sup>°C</sup></div>"+
         '<div class="wx-desc">'+info[0]+"</div>"+
-        '<div class="wx-city">'+label+"</div></div>";
+        '<div class="wx-city">'+label+"</div>";
       document.getElementById("wxExtra").innerHTML=
         '<div>体感<b>'+Math.round(c.apparent_temperature)+"°</b></div>"+
         '<div>湿度<b>'+c.relative_humidity_2m+"%</b></div>"+

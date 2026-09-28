@@ -38,8 +38,8 @@
   .card{padding:12px}
   .card-title{margin-bottom:6px}
   header{padding:10px 20px 0}
-  .wx-icon{font-size:2.3rem}
-  .wx-temp{font-size:2rem}
+  .wx-icon{font-size:2.1rem;margin:0 8px}
+  .wx-temp{font-size:1.9rem;margin:0 8px}
   .wx-days{margin-top:8px}
   .cal-head{margin-bottom:6px}
   .cal-cell .d{font-size:1.1rem}
@@ -55,5 +55,4 @@
   .cal-cell .d{font-size:.9rem}
   .cal-cell .l{display:none}         /* 农历小字在超矮格子中隐藏 */
   .wx-days{display:none}
-  .wx-main{gap:10px}
 }

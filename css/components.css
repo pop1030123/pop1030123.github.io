@@ -79,12 +79,14 @@ body[data-anim="slide"] .digit .sl.in{animation:slideInUp .35s ease-out both}
 @keyframes slideInUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(--digit-bg)}
 /* ============ Weather Card ============ */
-.wx-main{display:flex;align-items:center;gap:14px}
-.wx-icon{font-size:3rem;line-height:1}
-.wx-temp{font-size:2.6rem;font-weight:800;font-variant-numeric:tabular-nums}
+/* 当天天气：图标/温度/天气/地区 水平一排（margin 而非 gap，兼容旧 Safari） */
+.wx-main{display:flex;align-items:flex-end;justify-content:center;flex-wrap:wrap;padding:4px 0}
+.wx-icon{font-size:2.6rem;line-height:1;margin:0 10px}
+.wx-temp{font-size:2.2rem;font-weight:800;font-variant-numeric:tabular-nums;margin:0 10px}
 .wx-temp sup{font-size:1.1rem;font-weight:600}
-.wx-desc{font-size:.95rem;color:var(--ink-2);font-weight:600}
-.wx-city{font-size:.75rem;color:var(--ink-3);margin-top:2px}
+.wx-desc{font-size:1rem;color:var(--ink-2);font-weight:600;margin:0 10px;padding-left:10px;border-left:1px solid var(--line-2)}
+.wx-city{font-size:.8rem;color:var(--ink-3);margin:0 10px}
+.wx-city::before{content:"📍"}
 .wx-extra{display:flex;gap:14px;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line-2)}
 .wx-extra div{flex:1;text-align:center;font-size:.75rem;color:var(--ink-3)}
 .wx-extra b{display:block;font-size:.9rem;color:var(--ink);font-weight:700;margin-top:2px}
