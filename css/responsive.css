@@ -14,6 +14,8 @@
   .cal-legend{flex:none}
   .timer-wrap{flex:1;justify-content:center;min-height:0}
   .ring-box{width:clamp(100px,25vh,170px);height:clamp(100px,25vh,170px)}
+  /* 旧版 Safari 不支持 clamp()：提供固定兜底尺寸 */
+  .ring-box{width:140px;height:140px}
 }
 /* 平板（竖屏/横屏）与中等宽度：双列布局（<1024px；iPad mini 横屏 1024px 走三列桌面布局） */
 @media(max-width:1023px){
@@ -47,9 +49,12 @@
   .wx-temp{font-size:2rem}
   .wx-days{margin-top:8px}
   .ring-box{width:clamp(90px,22vh,140px);height:clamp(90px,22vh,140px)}
+  /* 旧版 Safari 不支持 clamp()：用更小固定尺寸避免与文字/按钮重叠 */
+  .ring-box{width:110px;height:110px}
   .ring-time{font-size:1.5rem}
   .tbtn{padding:7px 20px;font-size:.85rem}
   .timer-wrap{gap:10px}
+  .timer-presets{display:none}       /* 低高度横屏隐藏预设，避免折行撑高计时器卡片 */
   .cal-cell .d{font-size:.82rem}
   .cal-cell .l{font-size:.56rem}
 }

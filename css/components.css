@@ -104,7 +104,11 @@ body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(
 .cal-cell{
   aspect-ratio:1/1;border-radius:var(--radius-sm);display:flex;flex-direction:column;
   align-items:center;justify-content:center;cursor:pointer;position:relative;
-  border:1px solid transparent;transition:.15s;user-select:none;
+  border:1px solid transparent;transition:.15s;user-select:none;min-height:0;
+}
+/* 旧版 Safari（无 aspect-ratio）回退：让格子填满网格行高，而不是被内容撑开 */
+@supports not (aspect-ratio:1/1){
+  .cal-cell{height:100%;aspect-ratio:auto;}
 }
 .cal-cell:hover{background:var(--surface-2)}
 .cal-cell .d{font-size:.9rem;font-weight:600;line-height:1.15;font-variant-numeric:tabular-nums}
