@@ -37,7 +37,7 @@ function renderCal(){
     const cell=document.createElement("div"); cell.className="cal-cell"+(out?" out":"");
     const key=fmtKey(cellY,cellM,d);
     const fest=lunarText(cellY,cellM+1,d);   // cellM 为 0 基，lunarText 需要 1 基月份
-    const isFest=/节|旦|夕|宵|中秋|重阳|腊八/.test(fest);
+    const isFest=/除夕|节|旦|夕|宵|中秋|重阳|腊八|教师|劳动|儿童|圣诞|平安|妇女|植树|青年|情人节|小寒|大寒|立春|雨水|惊蛰|春分|清明|谷雨|立夏|小满|芒种|夏至|小暑|大暑|立秋|处暑|白露|秋分|寒露|霜降|立冬|小雪|大雪|冬至|元旦|国庆|端午|七夕|春节|元宵/.test(fest);
     cell.innerHTML='<span class="d">'+d+'</span><span class="l'+(isFest?" fest":"")+'">'+fest+"</span>";
     if(key===tKey) cell.classList.add("today");
     const tags=marks[key]||[];
