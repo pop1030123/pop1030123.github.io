@@ -51,8 +51,10 @@ main{
 /* ============ Time Card ============ */
 .c-time{--dh:calc(4.0rem*var(--fscale,1))}
 /* gap 固定 px，避免 fscale 过小时数字卡片紧贴；padding 归零以增大内容区 */
-.clock-row{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:6px;padding:0}
-.digit{position:relative;width:calc(2.7rem*var(--fscale,1));height:var(--dh);perspective:400px;overflow:hidden}
+.clock-row{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:0}   /* 旧 Safari 不支持 flex gap，用 margin 控制间距 */
+.digit{position:relative;width:calc(2.7rem*var(--fscale,1));height:var(--dh);perspective:400px;overflow:hidden;margin:0 3px}
+.digit:last-child{margin-right:0}
+.colon{margin:0 2px}
 .digit span{position:absolute;left:0;width:100%;height:50%;overflow:hidden;font-size:calc(2.8rem*var(--fscale,1));font-weight:700;font-variant-numeric:tabular-nums}
 .half b{position:absolute;left:0;top:0;width:100%;height:calc(var(--dh));display:block;text-align:center;line-height:var(--dh);font-weight:700;font-size:calc(2.8rem*var(--fscale,1));font-variant-numeric:tabular-nums}
 .half{position:absolute;left:0;width:100%;height:calc(var(--dh)/2);overflow:hidden}
@@ -94,7 +96,7 @@ body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(
 .wx-loading{animation:pulse 1.2s ease infinite}
 @keyframes pulse{50%{opacity:.4}}
 /* ============ Calendar Card ============ */
-.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .cal-title{font-size:1.05rem;font-weight:700}
 .cal-title small{color:var(--ink-3);font-weight:400;font-size:.78rem;margin-left:8px}
 .cal-nav{display:flex;gap:6px}
@@ -103,8 +105,8 @@ body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(
   color:var(--ink-2);cursor:pointer;font-size:.9rem;transition:.2s;
 }
 .cal-nav button:hover{border-color:var(--accent);color:var(--accent)}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.cal-wd{text-align:center;font-size:.7rem;color:var(--ink-3);padding:6px 0;font-weight:600}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-wd{text-align:center;font-size:.74rem;color:var(--ink-3);padding:4px 0;font-weight:600}
 .cal-wd.weekend{color:var(--accent)}
 .cal-cell{
   aspect-ratio:1/1;border-radius:var(--radius-sm);display:flex;flex-direction:column;
@@ -116,8 +118,8 @@ body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(
   .cal-cell{height:100%;aspect-ratio:auto;}
 }
 .cal-cell:hover{background:var(--surface-2)}
-.cal-cell .d{font-size:.9rem;font-weight:600;line-height:1.15;font-variant-numeric:tabular-nums}
-.cal-cell .l{font-size:.6rem;color:var(--ink-3);line-height:1.2;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
+.cal-cell .d{font-size:1.05rem;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.cal-cell .l{font-size:.72rem;color:var(--ink-3);line-height:1.2;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
 .cal-cell.has-side .l{max-width:calc(100% - 24px)}   /* 仅有左右图标时才收窄文字 */
 .cal-cell .l.fest{color:var(--accent)}
 .cal-cell.today{background:var(--accent);border-color:var(--accent)}
@@ -140,7 +142,7 @@ body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(
 .tagbox .slot.br{left:calc(50% + 2px);bottom:5px}
 .tagbox .slot em{font-style:normal;font-size:.55rem;color:var(--ink-3);line-height:1;padding-right:1px}
 .cal-cell.marked{border-color:currentColor}
-.cal-legend{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;font-size:.72rem;color:var(--ink-3)}
+.cal-legend{margin-top:6px;display:flex;flex-wrap:wrap;gap:8px;font-size:.72rem;color:var(--ink-3)}
 .cal-legend span{display:inline-flex;align-items:center;gap:4px}
 .cal-legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
 /* mark popover */
