@@ -1,0 +1,220 @@
+/* ================================================================
+   components.css — 布局网格 / 卡片 / 各功能组件 / 抽屉弹层
+   （响应式覆盖见 responsive.css，须在之后引入）
+   ================================================================ */
+/* ============ Layout ============ */
+main{
+  flex:1 1 auto;min-height:0;width:100%;
+  max-width:1440px;margin:0 auto;padding:14px 20px 10px;
+  display:grid;gap:16px;
+  grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) minmax(0,1fr);
+  grid-template-rows:minmax(auto,.55fr) minmax(0,1fr);
+  grid-template-areas:
+    "date time weather"
+    "calendar calendar timer";
+}
+.c-date{grid-area:date}.c-time{grid-area:time}.c-weather{grid-area:weather}
+.c-calendar{grid-area:calendar}.c-timer{grid-area:timer}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow-1);padding:22px;position:relative;overflow:visible;
+  transition:transform .25s ease,box-shadow .25s ease,background .35s,border-color .35s;
+  animation:cardIn .5s ease both;
+}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-2)}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.card-title{font-size:.72rem;font-weight:600;color:var(--ink-3);letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.card-title::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.hidden{display:none!important}
+/* ============ Date Card ============ */
+/* 日期/时间卡片：内容随卡片实际尺寸动态缩放（--fscale 由 JS ResizeObserver 计算） */
+.c-date,.c-time{display:flex;flex-direction:column}
+.c-date .card-title,.c-time .card-title{flex:none}
+.date-card-wrap{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  gap:calc(20px*var(--fscale,1));text-align:center;min-height:0;
+}
+.date-big{
+  font-size:calc(3.6rem*var(--fscale,1));font-weight:800;line-height:1;color:var(--accent);
+  font-variant-numeric:tabular-nums;min-width:2ch;text-align:center;
+}
+.date-big small{display:block;font-size:calc(.85rem*var(--fscale,1));font-weight:600;color:var(--ink-3);margin-top:calc(4px*var(--fscale,1))}
+.date-meta div{padding:calc(2px*var(--fscale,1)) 0}
+.date-cn{font-size:calc(1.05rem*var(--fscale,1));font-weight:700}
+.date-week{font-size:calc(1.5rem*var(--fscale,1));font-weight:700;margin:2px 0}
+.date-lunar{font-size:calc(.85rem*var(--fscale,1));color:var(--ink-2)}
+.date-lunar b{color:var(--accent);font-weight:600}
+/* ============ Time Card ============ */
+.c-time{--dh:calc(3.6rem*var(--fscale,1))}
+.clock-row{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:calc(6px*var(--fscale,1));padding:10px 0 4px}
+.digit{position:relative;width:calc(2.5rem*var(--fscale,1));height:var(--dh);perspective:400px;overflow:hidden}
+.digit span{position:absolute;left:0;width:100%;height:50%;overflow:hidden;font-size:calc(2.6rem*var(--fscale,1));font-weight:700;font-variant-numeric:tabular-nums}
+.half b{position:absolute;left:0;top:0;width:100%;height:calc(var(--dh));display:block;text-align:center;line-height:var(--dh);font-weight:700;font-size:calc(2.6rem*var(--fscale,1));font-variant-numeric:tabular-nums}
+.half{position:absolute;left:0;width:100%;height:calc(var(--dh)/2);overflow:hidden}
+.half.top{top:0}.half.top b{top:0}
+.half.bottom{bottom:0}.half.bottom b{top:calc(var(--dh)/-2)}
+.top-old{z-index:3;transform-origin:bottom;backface-visibility:hidden;border-radius:6px 6px 0 0;background:var(--digit-bg)}
+.top-new{z-index:2;background:var(--digit-bg);border-radius:6px 6px 0 0}
+.bottom-old{z-index:2;background:var(--digit-bg);border-radius:0 0 6px 6px}
+.bottom-new{z-index:3;transform:rotateX(90deg);transform-origin:top;backface-visibility:hidden;border-radius:0 0 6px 6px;background:var(--digit-bg)}
+.digit.flip .top-old{animation:foldUp .32s ease-in forwards}
+.digit.flip .bottom-new{animation:foldDown .32s .32s ease-in forwards}
+@keyframes foldUp{to{transform:rotateX(-90deg)}}
+@keyframes foldDown{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
+.colon{font-size:calc(2.4rem*var(--fscale,1));font-weight:700;color:var(--accent);line-height:var(--dh);padding:0 2px}
+html[data-theme="light"] .colon{color:var(--ink-2)}   /* 浅色模式冒号用灰色 */
+/* slide mode：旧数字向上滑出，新数字自下向上滑入 */
+body[data-anim="slide"] .digit .half{display:none}
+body[data-anim="slide"] .digit .sl{position:absolute;inset:0;height:100%;display:block;text-align:center;font-size:calc(2.6rem*var(--fscale,1));font-weight:700;line-height:var(--dh);font-variant-numeric:tabular-nums}
+body[data-anim="slide"] .digit .sl.out{animation:slideOutUp .35s ease-in both}
+body[data-anim="slide"] .digit .sl.in{animation:slideInUp .35s ease-out both}
+@keyframes slideOutUp{from{transform:translateY(0)}to{transform:translateY(-100%)}}
+@keyframes slideInUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(--digit-bg)}
+/* ============ Weather Card ============ */
+.wx-main{display:flex;align-items:center;gap:14px}
+.wx-icon{font-size:3rem;line-height:1}
+.wx-temp{font-size:2.6rem;font-weight:800;font-variant-numeric:tabular-nums}
+.wx-temp sup{font-size:1.1rem;font-weight:600}
+.wx-desc{font-size:.95rem;color:var(--ink-2);font-weight:600}
+.wx-city{font-size:.75rem;color:var(--ink-3);margin-top:2px}
+.wx-extra{display:flex;gap:14px;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line-2)}
+.wx-extra div{flex:1;text-align:center;font-size:.75rem;color:var(--ink-3)}
+.wx-extra b{display:block;font-size:.9rem;color:var(--ink);font-weight:700;margin-top:2px}
+.wx-days{display:flex;gap:8px;margin-top:12px}
+.wx-day{flex:1;text-align:center;font-size:.72rem;color:var(--ink-3);background:var(--surface-2);border-radius:var(--radius-sm);padding:8px 4px}
+.wx-day .em{font-size:1.2rem;display:block;margin:4px 0}
+.wx-day b{color:var(--ink);font-weight:600}
+.wx-err{font-size:.8rem;color:var(--ink-3)}
+.wx-loading{animation:pulse 1.2s ease infinite}
+@keyframes pulse{50%{opacity:.4}}
+/* ============ Calendar Card ============ */
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-title{font-size:1.05rem;font-weight:700}
+.cal-title small{color:var(--ink-3);font-weight:400;font-size:.78rem;margin-left:8px}
+.cal-nav{display:flex;gap:6px}
+.cal-nav button{
+  width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:transparent;
+  color:var(--ink-2);cursor:pointer;font-size:.9rem;transition:.2s;
+}
+.cal-nav button:hover{border-color:var(--accent);color:var(--accent)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-wd{text-align:center;font-size:.7rem;color:var(--ink-3);padding:6px 0;font-weight:600}
+.cal-wd.weekend{color:var(--accent)}
+.cal-cell{
+  aspect-ratio:1/1;border-radius:var(--radius-sm);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;cursor:pointer;position:relative;
+  border:1px solid transparent;transition:.15s;user-select:none;
+}
+.cal-cell:hover{background:var(--surface-2)}
+.cal-cell .d{font-size:.9rem;font-weight:600;line-height:1.15;font-variant-numeric:tabular-nums}
+.cal-cell .l{font-size:.6rem;color:var(--ink-3);line-height:1.2;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
+.cal-cell.has-side .l{max-width:calc(100% - 24px)}   /* 仅有左右图标时才收窄文字 */
+.cal-cell .l.fest{color:var(--accent)}
+.cal-cell.today{background:var(--accent);border-color:var(--accent)}
+.cal-cell.today .d,.cal-cell.today .l{color:var(--accent-ink)}
+.cal-cell.out{opacity:.32}
+/* 标签固定槽位：左 lt / 左下 lb / 右上 rt / 右下 rb / 下左 bl / 下右 br */
+.cal-cell.has-bottom{padding-bottom:14px}   /* 有底部槽位图案时文字区上移 */
+.tagbox{position:absolute;inset:0;pointer-events:none}
+.tagbox .slot{
+  position:absolute;display:flex;align-items:center;gap:1px;
+  border-radius:999px;padding:1px 2px;
+}
+/* 仅"今天"的实色格子需要背板保证图标对比度，普通格子图标直接放置、四周留白 */
+.cal-cell.today .tagbox .slot{background:rgba(255,255,255,.9)}
+.tagbox .slot.lt{left:6px;top:9px}
+.tagbox .slot.lb{left:6px;bottom:13px}
+.tagbox .slot.rt{right:6px;top:9px}
+.tagbox .slot.rb{right:6px;bottom:13px}
+.tagbox .slot.bl{left:calc(50% - 15px);bottom:5px}
+.tagbox .slot.br{left:calc(50% + 2px);bottom:5px}
+.tagbox .slot em{font-style:normal;font-size:.55rem;color:var(--ink-3);line-height:1;padding-right:1px}
+.cal-cell.marked{border-color:currentColor}
+.cal-legend{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;font-size:.72rem;color:var(--ink-3)}
+.cal-legend span{display:inline-flex;align-items:center;gap:4px}
+.cal-legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
+/* mark popover */
+.pop{
+  position:absolute;z-index:30;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;box-shadow:var(--shadow-2);padding:12px;width:200px;
+}
+.pop h4{font-size:.8rem;margin-bottom:8px}
+.pop .swatches{display:flex;gap:8px;margin-bottom:10px}
+.pop .shapes{display:flex;gap:4px;margin-bottom:10px}
+.pop .sh{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;cursor:pointer;color:var(--ink-2);border:1px solid var(--line);background:var(--surface-2);transition:.15s}
+.pop .sh:hover{color:var(--ink)}
+.pop .sh.on{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.pop .sw{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:.15s}
+.pop .sw.on{border-color:var(--ink);transform:scale(1.15)}
+.pop input{
+  width:100%;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);
+  border-radius:8px;padding:7px 9px;font-size:.8rem;outline:none;margin-bottom:10px;
+}
+.pop input:focus{border-color:var(--accent)}
+.pop .taglist{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;max-height:120px;overflow-y:auto}
+.pop .tag{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:3px 9px;color:var(--ink)}
+.pop .tag i{width:7px;height:7px;border-radius:50%;display:inline-block;flex:none}
+.pop .tag b{cursor:pointer;color:var(--ink-3);font-weight:400;font-size:.72rem;line-height:1}
+.pop .tag b:hover{color:var(--warn)}
+.pop .tag-empty{font-size:.72rem;color:var(--ink-3)}
+.pop .row{display:flex;gap:8px}
+.pop button{
+  flex:1;padding:7px 0;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);
+  color:var(--ink);cursor:pointer;font-size:.78rem;transition:.2s;
+}
+.pop button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.pop button:hover{border-color:var(--accent)}
+/* ============ Timer Card ============ */
+.timer-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.timer-presets{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.preset{
+  border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);
+  border-radius:999px;padding:6px 14px;font-size:.8rem;cursor:pointer;transition:.2s;font-variant-numeric:tabular-nums;
+}
+.preset:hover{border-color:var(--accent);color:var(--accent)}
+.preset.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.ring-box{position:relative;width:170px;height:170px}
+.ring-box svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--line);stroke-width:8}
+.ring-fg{fill:none;stroke:var(--accent);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .5s linear,stroke .3s}
+.ring-fg.done{stroke:var(--ok)}
+.ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-time{font-size:1.9rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.ring-state{font-size:.7rem;color:var(--ink-3);letter-spacing:.2em;margin-top:2px}
+.timer-btns{display:flex;gap:10px}
+.tbtn{
+  padding:9px 26px;border-radius:999px;border:1px solid var(--line);background:var(--surface);
+  color:var(--ink);font-size:.9rem;font-weight:600;cursor:pointer;transition:.2s;
+}
+.tbtn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.tbtn:hover{transform:translateY(-1px);box-shadow:var(--shadow-1)}
+.tbtn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+/* ============ Settings Drawer ============ */
+.mask{position:fixed;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:.3s;z-index:90}
+.mask.on{opacity:1;pointer-events:auto}
+.drawer{
+  position:fixed;top:0;right:0;height:100%;width:min(360px,92vw);background:var(--surface);
+  border-left:1px solid var(--line);z-index:100;transform:translateX(100%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);padding:24px;overflow-y:auto;
+}
+.drawer.on{transform:none}
+.drawer h3{font-size:1rem;margin-bottom:4px}
+.drawer .hint{font-size:.75rem;color:var(--ink-3);margin-bottom:18px}
+.set-group{margin-bottom:22px}
+.set-group>label{display:block;font-size:.72rem;font-weight:700;color:var(--ink-3);letter-spacing:.12em;margin-bottom:10px}
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{flex:1;padding:8px 0;background:transparent;border:none;color:var(--ink-2);cursor:pointer;font-size:.82rem;transition:.2s}
+.seg button.on{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.chk{display:flex;align-items:center;gap:10px;padding:9px 0;cursor:pointer;font-size:.88rem;user-select:none}
+.chk input{accent-color:var(--accent);width:16px;height:16px;cursor:pointer}
+.timer-rows{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.timer-rows label{font-size:.78rem;color:var(--ink-2);display:flex;flex-direction:column;gap:5px}
+.timer-rows input{
+  border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:8px;
+  padding:7px 9px;font-size:.85rem;outline:none;width:100%;
+}
+.timer-rows input:focus{border-color:var(--accent)}
+.drawer .danger{width:100%;margin-top:6px;padding:9px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--warn);cursor:pointer;font-size:.82rem}
+.drawer .danger:hover{border-color:var(--warn)}
+.drawer-close{position:absolute;top:16px;right:16px}

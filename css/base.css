@@ -1,0 +1,59 @@
+/* ================================================================
+   base.css — 设计变量 / 主题 / reset / 页头页脚
+   ================================================================ */
+/* ============ Design Tokens ============ */
+:root{
+  --bg:#f6f4ef; --surface:#ffffff; --surface-2:#fbfaf7;
+  --ink:#211e1a; --ink-2:#6b655c; --ink-3:#a39b8f;
+  --line:#e7e2d9; --line-2:#efece5;
+  --accent:#c8502f; --accent-ink:#ffffff; --accent-soft:rgba(200,80,47,.10);
+  --ok:#3a8f6d; --warn:#c98a1d;
+  --shadow-1:0 1px 2px rgba(33,30,26,.05),0 2px 8px rgba(33,30,26,.05);
+  --shadow-2:0 4px 12px rgba(33,30,26,.08),0 12px 32px rgba(33,30,26,.10);
+  --radius:16px; --radius-sm:10px;
+  --dh:3.6rem; /* digit height for flip clock */
+  --digit-bg:#ece7dd;  /* 数字位底色：比卡片更深一档（浅色） */
+  color-scheme: light;
+}
+html[data-theme="dark"]{
+  --bg:#15171b; --surface:#1f2227; --surface-2:#24272d;
+  --ink:#eceae5; --ink-2:#9aa0a8; --ink-3:#6c737c;
+  --line:#2e3238; --line-2:#26292f;
+  --accent:#e5794f; --accent-ink:#1a120e; --accent-soft:rgba(229,121,79,.14);
+  --ok:#57b893; --warn:#d9a03f;
+  --shadow-1:0 1px 2px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.35);
+  --shadow-2:0 4px 14px rgba(0,0,0,.45),0 14px 34px rgba(0,0,0,.4);
+  --digit-bg:#2c3037;  /* 数字位底色：比卡片更亮一档（深色） */
+  color-scheme: dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{height:100%}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:var(--bg); color:var(--ink); height:100vh; height:100dvh;
+  display:flex;flex-direction:column;
+  transition:background .35s ease,color .35s ease;
+}
+/* ============ Header ============ */
+header{
+  flex:none;width:100%;
+  max-width:1440px;margin:0 auto;padding:18px 20px 4px;
+  padding-top:calc(18px + env(safe-area-inset-top,0px));   /* 全屏 Web App 模式下避开状态栏 */
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.brand{font-size:1.15rem;font-weight:700;letter-spacing:.02em}
+.brand small{display:block;font-size:.72rem;font-weight:400;color:var(--ink-3);letter-spacing:.14em;margin-top:2px}
+.header-actions{display:flex;gap:8px}
+.icon-btn{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink-2);cursor:pointer;font-size:1.05rem;
+  display:grid;place-items:center;transition:.2s;box-shadow:var(--shadow-1);
+}
+.icon-btn:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-1px)}
+/* ============ Footer ============ */
+footer{
+  flex:none;width:100%;max-width:1440px;margin:0 auto;padding:0 20px 8px;
+  padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));   /* 避开 Home 指示条 */
+  text-align:center;font-size:.72rem;color:var(--ink-3);
+}
+footer a{color:var(--ink-3)}

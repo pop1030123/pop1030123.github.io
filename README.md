@@ -1,6 +1,31 @@
 # My Dashboard — GitHub Pages 主页
 
-自包含的单文件个人主页（`index.html`），无需构建、无需依赖、无需 API 密钥。
+零依赖、免构建的多文件个人主页，无需打包工具、无需 API 密钥，静态托管即可运行。
+
+## 目录结构
+
+```
+├── index.html          # 页面结构骨架（引入下列 CSS / JS）
+├── css/
+│   ├── base.css        # 设计变量 / 深浅主题 / reset / 页头页脚
+│   ├── components.css  # 布局网格 / 卡片 / 各功能组件样式
+│   └── responsive.css  # 响应式媒体查询（必须最后引入以保持覆盖优先级）
+└── js/                 # 传统 script 按依赖顺序加载（非 ES modules，兼容旧版 Safari）
+    ├── storage.js      # 设置与日历标记持久化（localStorage）
+    ├── lunar.js        # 农历算法（1900-2100）与节日表
+    ├── shapes.js       # 日历标记的 SVG 形状图标
+    ├── theme.js        # 深浅色主题
+    ├── date.js         # 日期卡片
+    ├── clock.js        # 时间卡片（翻转 / 上滑动画）
+    ├── weather.js      # 天气卡片（Open-Meteo）
+    ├── calendar.js     # 日历卡片（农历 / 标记弹层）
+    ├── timer.js        # 倒计时（番茄钟）
+    ├── settings.js     # 设置抽屉
+    ├── scale.js        # 卡片内容动态缩放（ResizeObserver）
+    └── main.js         # 初始化入口（必须最后加载）
+```
+
+模块间通过传统 script 的全局词法作用域共享变量与函数（文件头注释标明了各自的依赖与全局导出），新增/修改功能只需改动对应模块文件。
 
 ## 功能
 
@@ -25,10 +50,10 @@
 ## 部署到 GitHub Pages
 
 1. 在 GitHub 新建仓库（如 `username.github.io`，或任意仓库）。
-2. 把 `index.html` 上传/推送到仓库根目录：
+2. 把 `index.html`、`css/`、`js/` 上传/推送到仓库根目录：
    ```bash
    git init
-   git add index.html
+   git add index.html css js
    git commit -m "init dashboard"
    git remote add origin https://github.com/<你的用户名>/<仓库名>.git
    git push -u origin main

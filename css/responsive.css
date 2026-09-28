@@ -1,0 +1,75 @@
+/* ================================================================
+   responsive.css — 响应式布局（置于样式表末尾，确保覆盖组件基础样式）
+   引入顺序必须在 base.css / components.css 之后
+   ================================================================ */
+/* ≥720px：整页占满视口高度、无滚动条；日历/倒计时卡片弹性填充剩余高度 */
+@media(min-width:720px){
+  body{overflow:hidden}
+  .c-date,.c-time{container-type:size}   /* 尺寸容器：卡片高度由网格分配决定，内容缩放不反过来影响卡片高度 */
+  .card-title,.cal-head{flex:none}
+  .c-calendar,.c-timer{display:flex;flex-direction:column;min-height:0}
+  .c-timer{overflow:hidden}   /* 计时器无弹层，超矮屏下内容在卡片内裁剪，避免溢出到相邻卡片 */
+  .cal-grid{flex:1;min-height:0}
+  .cal-cell{aspect-ratio:auto;overflow:hidden}
+  .cal-legend{flex:none}
+  .timer-wrap{flex:1;justify-content:center;min-height:0}
+  .ring-box{width:clamp(100px,25vh,170px);height:clamp(100px,25vh,170px)}
+}
+/* 平板（竖屏/横屏）与中等宽度：双列布局（<1024px；iPad mini 横屏 1024px 走三列桌面布局） */
+@media(max-width:1023px){
+  main{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-rows:minmax(190px,auto) minmax(0,1fr) auto;
+    grid-template-areas:
+      "date time"
+      "calendar timer"
+      "weather weather";
+  }
+}
+/* 手机竖屏：单列布局，允许纵向滚动（内容物理上无法压缩进一屏） */
+@media(max-width:719px){
+  body{height:auto;min-height:100vh;overflow:auto}
+  main{
+    flex:none;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:none;
+    grid-template-areas:"date" "time" "weather" "calendar" "timer";
+    padding:14px 12px 40px;gap:12px;
+  }
+  header{padding:20px 14px 4px}
+  .cal-cell .l{font-size:.56rem}   /* 小屏微缩农历字号，保证三字节日完整显示 */
+}
+/* 手机横屏 / iPad 横屏等低高度场景：紧凑化，尽量一屏容纳 */
+@media(orientation:landscape) and (max-height:860px){
+  .card{padding:16px}
+  .card-title{margin-bottom:10px}
+  .wx-icon{font-size:2.3rem}
+  .wx-temp{font-size:2rem}
+  .wx-days{margin-top:8px}
+  .ring-box{width:clamp(90px,22vh,140px);height:clamp(90px,22vh,140px)}
+  .ring-time{font-size:1.5rem}
+  .tbtn{padding:7px 20px;font-size:.85rem}
+  .timer-wrap{gap:10px}
+  .cal-cell .d{font-size:.82rem}
+  .cal-cell .l{font-size:.56rem}
+}
+/* 极矮横屏（手机横屏）：改三列两行布局 + 深度压缩，保证一屏放下、无滚动 */
+@media(orientation:landscape) and (max-height:520px){
+  .card{padding:12px 14px}
+  header{padding:10px 20px 0}
+  main{
+    padding:10px 20px 8px;gap:10px;
+    grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,.9fr);
+    grid-template-rows:minmax(96px,auto) minmax(0,1fr);
+    grid-template-areas:"date time weather" "calendar calendar timer";
+  }
+  footer{display:none}
+  .ring-box{width:clamp(64px,16vh,96px);height:clamp(64px,16vh,96px)}
+  .timer-presets{display:none}       /* 预设按钮隐藏（开始前为默认时长），把高度让给圆环 */
+  .tbtn{padding:5px 14px;font-size:.78rem}
+  .cal-legend{display:none}          /* 图例隐藏，把高度让给日期格 */
+  .cal-cell .d{font-size:.72rem}
+  .cal-cell .l{display:none}         /* 农历小字在超矮格子中隐藏 */
+  .wx-days{display:none}
+  .wx-main{gap:10px}
+}
