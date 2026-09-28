@@ -11,7 +11,8 @@
 (function(){
   const BASE={
     "card-date":{w:300,h:125,inner:".date-card-wrap"},
-    "card-time":{w:370,h:125,inner:".clock-row"}
+    /* 时间卡片基准改小，使同尺寸容器获得更大 fscale；宽度基准改小以充分利用 iPad 横屏空间 */
+    "card-time":{w:320,h:105,inner:".clock-row"}
   };
   function applyCardScale(cardId){
     const b=BASE[cardId], card=document.getElementById(cardId);
@@ -21,7 +22,7 @@
     const w=inner.clientWidth, h=inner.clientHeight;
     if(w<=0||h<=0) return;               // 卡片隐藏时跳过
     let s=(window.innerWidth<720)? w/b.w : Math.min(w/b.w,h/b.h);
-    s=Math.max(0.55,Math.min(1.6,s));
+    s=Math.max(0.55,Math.min(1.8,s));
     card.style.setProperty("--fscale",s.toFixed(3));
   }
   function applyAllScales(){

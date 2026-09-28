@@ -15,7 +15,12 @@ function renderCal(){
   title.innerHTML=(calY+"年"+(calM+1)+"月")+"<small>"+solar2lunar(new Date(calY,calM,1)).gzYear+"年</small>";
   grid.innerHTML="";
   const ws=S.weekStart, wdNames= ws===0?["日","一","二","三","四","五","六"]:["一","二","三","四","五","六","日"];
-  wdNames.forEach((w,i)=>{ const el=document.createElement("div"); el.className="cal-wd"+(i===0||i===6?" weekend":""); el.textContent=w; grid.appendChild(el); });
+  wdNames.forEach((w,i)=>{
+    const dow=(ws+i)%7;                              /* 真实的星期几：0=周日，6=周六 */
+    const el=document.createElement("div");
+    el.className="cal-wd"+(dow===0||dow===6?" weekend":"");
+    el.textContent=w; grid.appendChild(el);
+  });
   const first=new Date(calY,calM,1), startDow=(first.getDay()-ws+7)%7;
   const daysInMonth=new Date(calY,calM+1,0).getDate();
   const prevDays=new Date(calY,calM,0).getDate();
