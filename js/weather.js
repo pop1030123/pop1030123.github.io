@@ -12,15 +12,22 @@ const WXC={0:["晴","☀️"],1:["大部晴朗","🌤️"],2:["多云","⛅"],3:
 85:["阵雪","🌨️"],86:["阵雪","🌨️"],95:["雷阵雨","⛈️"],96:["雷雨伴冰雹","⛈️"],99:["雷雨伴冰雹","⛈️"]};
 function wxInfo(code){ return WXC[code]||["—","🌡️"]; }
 function fetchWeather(){
+  _wxLast=Date.now();
   const main=document.getElementById("wxMain");
-  main.innerHTML='<div class="wx-err wx-loading">正在获取天气…</div>';
-  document.getElementById("wxExtra").innerHTML="";
-  document.getElementById("wxDays").innerHTML="";
+  /* 刷新（已有数据）时不清空旧内容，避免瞬时网络抖动把正常显示毁掉 */
+  const hasData=!!main.querySelector(".wx-icon");
+  if(!hasData) main.innerHTML='<div class="wx-err wx-loading">正在获取天气…</div>';
   const done=(lat,lon,label)=>{
     const url="https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+
       "&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m"+
       "&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=4";
-    fetch(url).then(r=>r.json()).then(j=>{
+    /* 带超时的 fetch：网络半断时不会无限挂起；失败自动重试一次 */
+    const fetchTO=(u,ms)=>{
+      let ctl=null;
+      if(typeof AbortController!=="undefined"){ ctl=new AbortController(); setTimeout(()=>ctl.abort(),ms); }
+      return fetch(u, ctl?{signal:ctl.signal}:undefined);
+    };
+    const render=j=>{
       const c=j.current, info=wxInfo(c.weather_code);
       /* 当天信息横向一排：图标 | 温度 | 天气 | 地区 */
       main.innerHTML=
@@ -40,7 +47,10 @@ function fetchWeather(){
           Math.round(days.temperature_2m_min[i])+"° / "+Math.round(days.temperature_2m_max[i])+"°</b></div>";
       }
       document.getElementById("wxDays").innerHTML=html;
-    }).catch(()=>{ main.innerHTML='<div class="wx-err">天气获取失败，点击 ↻ 重试</div>'; });
+    };
+    fetchTO(url,12000).then(r=>r.json()).then(render)
+      .catch(()=>setTimeout(()=>fetchTO(url,12000).then(r=>r.json()).then(render)
+        .catch(()=>{ if(!hasData) main.innerHTML='<div class="wx-err">天气获取失败，点击 ↻ 重试</div>'; }),3000));
   };
   // 城市名反查（免费、免密钥、支持中文）
   function revName(lat,lon){
@@ -70,3 +80,8 @@ function fetchWeather(){
 }
 document.getElementById("wxRefresh").onclick=fetchWeather;
 setInterval(fetchWeather, 30*60*1000);
+/* 页面从后台切回前台：距上次刷新超过 30 分钟则立即补拉（定时器在后台会被节流） */
+let _wxLast=0;
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden && Date.now()-_wxLast>30*60*1000){ _wxLast=Date.now(); fetchWeather(); }
+});
