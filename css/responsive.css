@@ -7,8 +7,13 @@
   body{overflow:hidden}
   .c-date,.c-time{container-type:size}   /* 尺寸容器：卡片高度由网格分配决定，内容缩放不反过来影响卡片高度 */
   .card-title,.cal-head{flex:none}
-  /* ≥720px 时让天气/日历卡片整体内容垂直居中（与日期/时间卡片一致） */
-  .c-calendar,.c-weather{display:flex;flex-direction:column;justify-content:center;min-height:0}
+  /* ≥720px：日历内容垂直居中；天气卡片三行（当天/指标/三日预报）弹性均分填满卡片 */
+  .c-calendar{display:flex;flex-direction:column;justify-content:center;min-height:0}
+  .c-weather{display:flex;flex-direction:column;min-height:0}
+  .wx-main{flex:1;min-height:0;align-items:center}            /* 当天一行垂直居中于其配额 */
+  .wx-extra{flex:1;min-height:0;align-items:center}            /* 指标行垂直居中 */
+  .wx-days{flex:1;min-height:0}                                 /* 三日预报占满剩余高度 */
+  .wx-day{display:flex;flex-direction:column;justify-content:center}
   .cal-grid{flex:1;min-height:0}
   .cal-cell{aspect-ratio:auto;overflow:hidden}
   .cal-legend{flex:none}
@@ -38,8 +43,6 @@
   .card{padding:12px}
   .card-title{margin-bottom:6px}
   header{padding:10px 20px 0}
-  .wx-icon{font-size:2.1rem;margin:0 8px}
-  .wx-temp{font-size:1.9rem;margin:0 8px}
   .wx-days{margin-top:8px}
   .cal-head{margin-bottom:6px}
   .cal-cell .d{font-size:1.1rem}

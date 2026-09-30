@@ -79,22 +79,25 @@ body[data-anim="slide"] .digit .sl.in{animation:slideInUp .35s ease-out both}
 @keyframes slideInUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(--digit-bg)}
 /* ============ Weather Card ============ */
-/* 当天天气：图标/温度/天气/地区 水平一排（margin 而非 gap，兼容旧 Safari） */
-.wx-main{display:flex;align-items:flex-end;justify-content:center;flex-wrap:wrap;padding:4px 0}
-.wx-icon{font-size:2.6rem;line-height:1;margin:0 10px}
-.wx-temp{font-size:2.2rem;font-weight:800;font-variant-numeric:tabular-nums;margin:0 10px}
-.wx-temp sup{font-size:1.1rem;font-weight:600}
-.wx-desc{font-size:1rem;color:var(--ink-2);font-weight:600;margin:0 10px;padding-left:10px;border-left:1px solid var(--line-2)}
-.wx-city{font-size:.8rem;color:var(--ink-3);margin:0 10px}
+/* 当天天气：图标/温度/天气/地区 水平一排；字号随卡片尺寸 --fscale 缩放（scale.js 驱动） */
+.wx-main{display:flex;align-items:flex-end;justify-content:center;flex-wrap:wrap;padding:2px 0}
+.wx-icon{font-size:calc(3rem*var(--fscale,1));line-height:1;margin:0 calc(10px*var(--fscale,1))}
+.wx-temp{font-size:calc(2.4rem*var(--fscale,1));font-weight:800;font-variant-numeric:tabular-nums;margin:0 calc(10px*var(--fscale,1))}
+.wx-temp sup{font-size:calc(1.1rem*var(--fscale,1));font-weight:600}
+.wx-desc{font-size:calc(1.15rem*var(--fscale,1));color:var(--ink-2);font-weight:600;margin:0 calc(10px*var(--fscale,1));padding-left:calc(10px*var(--fscale,1));border-left:1px solid var(--line-2)}
+.wx-city{font-size:calc(.9rem*var(--fscale,1));color:var(--ink-3);margin:0 calc(10px*var(--fscale,1))}
 .wx-city::before{content:"📍"}
-.wx-extra{display:flex;gap:14px;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line-2)}
-.wx-extra div{flex:1;text-align:center;font-size:.75rem;color:var(--ink-3)}
-.wx-extra b{display:block;font-size:.9rem;color:var(--ink);font-weight:700;margin-top:2px}
-.wx-days{display:flex;gap:8px;margin-top:12px}
-.wx-day{flex:1;text-align:center;font-size:.72rem;color:var(--ink-3);background:var(--surface-2);border-radius:var(--radius-sm);padding:8px 4px}
-.wx-day .em{font-size:1.2rem;display:block;margin:4px 0}
+/* 间距用 margin 而非 gap（旧 Safari 不支持 flex gap） */
+.wx-extra{display:flex;margin-top:calc(10px*var(--fscale,1));padding-top:calc(10px*var(--fscale,1));border-top:1px dashed var(--line-2)}
+.wx-extra div{flex:1;text-align:center;font-size:calc(.8rem*var(--fscale,1));color:var(--ink-3);margin-right:calc(14px*var(--fscale,1))}
+.wx-extra div:last-child{margin-right:0}
+.wx-extra b{display:block;font-size:calc(1.05rem*var(--fscale,1));color:var(--ink);font-weight:700;margin-top:2px}
+.wx-days{display:flex;margin-top:calc(10px*var(--fscale,1))}
+.wx-day{flex:1;text-align:center;font-size:calc(.8rem*var(--fscale,1));color:var(--ink-3);background:var(--surface-2);border-radius:var(--radius-sm);padding:calc(8px*var(--fscale,1)) 4px;margin-right:calc(8px*var(--fscale,1))}
+.wx-day:last-child{margin-right:0}
+.wx-day .em{font-size:calc(1.6rem*var(--fscale,1));display:block;margin:4px 0}
 .wx-day b{color:var(--ink);font-weight:600}
-.wx-err{font-size:.8rem;color:var(--ink-3)}
+.wx-err{font-size:calc(.8rem*var(--fscale,1));color:var(--ink-3)}
 .wx-loading{animation:pulse 1.2s ease infinite}
 @keyframes pulse{50%{opacity:.4}}
 /* ============ Calendar Card ============ */

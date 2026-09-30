@@ -12,14 +12,16 @@
   const BASE={
     "card-date":{w:300,h:125,inner:".date-card-wrap"},
     /* 时间卡片基准改小，使同尺寸容器获得更大 fscale；宽度基准改小以充分利用 iPad 横屏空间 */
-    "card-time":{w:320,h:105,inner:".clock-row"}
+    "card-time":{w:320,h:105,inner:".clock-row"},
+    /* 天气卡片：直接以整卡为测量对象（inner:null），三行内容随卡片尺寸同步放大 */
+    "card-weather":{w:380,h:190,inner:null}
   };
   function applyCardScale(cardId){
     const b=BASE[cardId], card=document.getElementById(cardId);
     if(!card) return;
-    const inner=card.querySelector(b.inner);
-    if(!inner) return;
-    const w=inner.clientWidth, h=inner.clientHeight;
+    const el=b.inner?card.querySelector(b.inner):card;
+    if(!el) return;
+    const w=el.clientWidth, h=el.clientHeight;
     if(w<=0||h<=0) return;               // 卡片隐藏时跳过
     let s=(window.innerWidth<720)? w/b.w : Math.min(w/b.w,h/b.h);
     s=Math.max(0.55,Math.min(1.8,s));
@@ -28,12 +30,13 @@
   function applyAllScales(){
     applyCardScale("card-date");
     applyCardScale("card-time");
+    applyCardScale("card-weather");
   }
   if(typeof ResizeObserver!=="undefined"){
     const ro=new ResizeObserver(entries=>{
       for(const en of entries){ applyCardScale(en.target.id); }
     });
-    ["card-date","card-time"].forEach(id=>{
+    ["card-date","card-time","card-weather"].forEach(id=>{
       const el=document.getElementById(id);
       if(el) ro.observe(el);
     });
