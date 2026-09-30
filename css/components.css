@@ -98,6 +98,8 @@ body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(
 .wx-day .em{font-size:calc(1.6rem*var(--fscale,1));display:block;margin:4px 0}
 .wx-day b{color:var(--ink);font-weight:600}
 .wx-err{font-size:calc(.8rem*var(--fscale,1));color:var(--ink-3)}
+/* 标题栏：天气更新时间戳，靠右、紧挨 ↻ 刷新按钮 */
+.wx-stamp{margin-left:auto;margin-right:8px;font-size:.65rem;font-weight:400;letter-spacing:0;text-transform:none;color:var(--ink-3);font-variant-numeric:tabular-nums}
 .wx-loading{animation:pulse 1.2s ease infinite}
 @keyframes pulse{50%{opacity:.4}}
 /* ============ Calendar Card ============ */

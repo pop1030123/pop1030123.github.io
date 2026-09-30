@@ -47,6 +47,10 @@ function fetchWeather(){
           Math.round(days.temperature_2m_min[i])+"° / "+Math.round(days.temperature_2m_max[i])+"°</b></div>";
       }
       document.getElementById("wxDays").innerHTML=html;
+      /* 成功更新时间戳（标题栏显示） */
+      const t=new Date(), pad=n=>String(n).padStart(2,"0");
+      const st=document.getElementById("wxStamp");
+      if(st) st.textContent="更新于 "+pad(t.getHours())+":"+pad(t.getMinutes());
     };
     fetchTO(url,12000).then(r=>r.json()).then(render)
       .catch(()=>setTimeout(()=>fetchTO(url,12000).then(r=>r.json()).then(render)

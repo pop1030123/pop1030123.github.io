@@ -11,9 +11,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Dashboard">
 <!-- 样式：基础 → 组件 → 响应式（顺序不可颠倒，响应式须最后覆盖） -->
-<link rel="stylesheet" href="css/base.css?v=10">
-<link rel="stylesheet" href="css/components.css?v=10">
-<link rel="stylesheet" href="css/responsive.css?v=10">
+<link rel="stylesheet" href="css/base.css?v=11">
+<link rel="stylesheet" href="css/components.css?v=11">
+<link rel="stylesheet" href="css/responsive.css?v=11">
 </head>
 <body data-anim="flip">
 
@@ -46,7 +46,7 @@
 
   <!-- 第二行：天气 / 日历 -->
   <section class="card c-weather" id="card-weather">
-    <div class="card-title">天气 <span style="margin-left:auto;cursor:pointer" id="wxRefresh" title="刷新">↻</span></div>
+    <div class="card-title">天气 <span id="wxStamp" class="wx-stamp"></span><span style="margin-left:0;cursor:pointer" id="wxRefresh" title="刷新">↻</span></div>
     <div class="wx-main" id="wxMain"><div class="wx-err wx-loading">正在定位获取天气…</div></div>
     <div class="wx-extra" id="wxExtra"></div>
     <div class="wx-days" id="wxDays"></div>
@@ -121,7 +121,7 @@
 <script src="js/theme.js?v=8"></script>
 <script src="js/date.js?v=8"></script>
 <script src="js/clock.js?v=8"></script>
-<script src="js/weather.js?v=10"></script>
+<script src="js/weather.js?v=12"></script>
 <script src="js/calendar.js?v=8"></script>
 <script src="js/settings.js?v=8"></script>
 <script src="js/scale.js?v=9"></script>
