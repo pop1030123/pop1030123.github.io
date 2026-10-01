@@ -129,6 +129,8 @@ body[data-anim="slide"] .digit{overflow:hidden;border-radius:8px;background:var(
 .cal-cell .l{font-size:.78rem;color:var(--ink-3);line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 1px}
 .cal-cell.has-side .l{max-width:calc(100% - 24px)}   /* 仅有左右图标时才收窄文字 */
 .cal-cell .l.fest{color:var(--accent)}
+/* 双休日：日期数字红色（与表头一致）；today 的红底白字规则在后面，优先级更高不受影响 */
+.cal-cell.weekend .d{color:var(--accent)}
 .cal-cell.today{background:var(--accent);border-color:var(--accent)}
 .cal-cell.today .d,.cal-cell.today .l{color:var(--accent-ink)}
 .cal-cell.out{opacity:.32}

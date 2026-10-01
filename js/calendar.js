@@ -39,7 +39,9 @@ function renderCal(){
     if(i<startDow){ d=prevDays-startDow+1+i; out=true; cellM-=1; if(cellM<0){cellM=11;cellY-=1;} }
     else if(i>=startDow+daysInMonth){ d=i-startDow-daysInMonth+1; out=true; cellM+=1; if(cellM>11){cellM=0;cellY+=1;} }
     else d=i-startDow+1;
-    const cell=document.createElement("div"); cell.className="cal-cell"+(out?" out":"");
+    const cell=document.createElement("div");
+    const dow=new Date(cellY,cellM,d).getDay();   /* 0=周日，6=周六 */
+    cell.className="cal-cell"+(out?" out":"")+((dow===0||dow===6)?" weekend":"");
     const key=fmtKey(cellY,cellM,d);
     const fest=lunarText(cellY,cellM+1,d);   // cellM 为 0 基，lunarText 需要 1 基月份
     const isFest=/除夕|节|旦|夕|宵|中秋|重阳|腊八|教师|劳动|儿童|圣诞|平安|妇女|植树|青年|情人节|小寒|大寒|立春|雨水|惊蛰|春分|清明|谷雨|立夏|小满|芒种|夏至|小暑|大暑|立秋|处暑|白露|秋分|寒露|霜降|立冬|小雪|大雪|冬至|元旦|国庆|端午|七夕|春节|元宵/.test(fest);
