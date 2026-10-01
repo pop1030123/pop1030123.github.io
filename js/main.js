@@ -20,7 +20,8 @@ function _checkDayRollover(){
   if(k!==_lastDayKey){
     _lastDayKey=k;
     renderDate();
-    renderCal();         /* 用户停留的 calY/calM 不变，仅刷新“今日”高亮与当日标注 */
+    calFollowToday();    /* 未手动翻页则跳到新的当月（跨月边界时月/年标题、today 一并刷新） */
+    renderCal();
   }
 }
 setInterval(_checkDayRollover, 60*1000);     // 每分钟检查一次

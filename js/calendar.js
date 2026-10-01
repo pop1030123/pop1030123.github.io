@@ -7,8 +7,13 @@
    全局导出：renderCal()
    ================================================================ */
 let calY, calM; // 当前查看的年月
+let calNav=false; // 用户是否手动翻离当月（翻页后跨天不再自动跟随）
 (function(){ const n=new Date(); calY=n.getFullYear(); calM=n.getMonth(); })();
 function fmtKey(y,m,d){ return y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0"); }
+/* 跨天时由 main.js 调用：未手动翻页则跟随到新的当月（标题年/月、today 高亮随之全部刷新） */
+function calFollowToday(){
+  if(!calNav){ const n=new Date(); calY=n.getFullYear(); calM=n.getMonth(); }
+}
 function renderCal(){
   const grid=document.getElementById("calGrid");
   const title=document.getElementById("calTitle");
@@ -151,6 +156,6 @@ function openPop(cell,key){
   pop.style.top=top+"px";
   popEl=pop;
 }
-document.getElementById("calPrev").onclick=()=>{ calM--; if(calM<0){calM=11;calY--;} renderCal(); };
-document.getElementById("calNext").onclick=()=>{ calM++; if(calM>11){calM=0;calY++;} renderCal(); };
-document.getElementById("calToday").onclick=()=>{ const n=new Date(); calY=n.getFullYear(); calM=n.getMonth(); renderCal(); };
+document.getElementById("calPrev").onclick=()=>{ calM--; if(calM<0){calM=11;calY--;} calNav=true; renderCal(); };
+document.getElementById("calNext").onclick=()=>{ calM++; if(calM>11){calM=0;calY++;} calNav=true; renderCal(); };
+document.getElementById("calToday").onclick=()=>{ const n=new Date(); calY=n.getFullYear(); calM=n.getMonth(); calNav=false; renderCal(); };
